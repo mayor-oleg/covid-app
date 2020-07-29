@@ -128,6 +128,6 @@ def update_date_graph (country):
     return fig
 
 if __name__ =="__main__":
-    app.run_server()
+    app.run_server(debug=True)
     #(debug = True, host = '127.0.0.1', port = 8050)
                  
