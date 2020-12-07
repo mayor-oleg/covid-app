@@ -1,16 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Dec  3 18:57:58 2020
 
-@author: jr
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 21 16:19:02 2020
-
-@author: jr
-"""
 #my imports
 from datetime import date
 from datetime import timedelta
@@ -38,17 +26,7 @@ from plotly import graph_objs as go
 
 # getting name csv and country name
 
-import os
-
-directory = os.path.join("c:\\","path")
-mypath = os.getcwd()
-csv_file = []
-for root,dirs,files in os.walk(mypath):
-    for file in files:       
-        if file.endswith(".csv"):           
-           csv_file.append(file)   
-#print (csv_file)           
-link = csv_file
+link = ['df_predAfg.csv', 'df_predAlb.csv']  
 
 
 
