@@ -1,4 +1,4 @@
-aiohttp @ file:///C:/ci/aiohttp_1603205016699/work
+aiohttp 
 alabaster==0.7.12
 altgraph==0.17
 anaconda-client==1.7.2
