@@ -40,7 +40,7 @@ for root,dirs,files in os.walk(mypath):
     for file in files:       
         if file.endswith(".csv"):           
            csv_file.append(file)   
-#print (csv_file)           
+print (csv_file)           
 link = csv_file
 
 
