@@ -34,18 +34,24 @@ import seaborn as sns
 # getting name csv and country name
 
 #directory = os.path.join("c:\\","path")
-os.chdir('https://gihttps://github.com/mayor-oleg/covid-app/tree/master/countries')
-mypath = os.getcwd()
-print ('mypath = ', mypath)
-csv_file = []
-for root,dirs,files in os.walk(mypath):
-    for file in files:       
-        if file.endswith(".csv"):           
-           csv_file.append(file)   
-print (csv_file)           
-link = csv_file
-
-
+#os.chdir('https://gihttps://github.com/mayor-oleg/covid-app/tree/master/countries')
+#mypath = os.getcwd()
+#print ('mypath = ', mypath)
+#csv_file = []
+#for root,dirs,files in os.walk(mypath):
+    #for file in files:       
+        #if file.endswith(".csv"):           
+           #csv_file.append(file)   
+#print (csv_file)           
+csv_file = ['df_predAfgha.csv', 'df_predAustr.csv', 'df_predBrazi.csv', 'df_predBulga.csv', 'df_predChina.csv', 'df_predCypru.csv', 'df_predDenma.csv', 
+        'df_predEgypt.csv', 'df_predGerma.csv', 'df_predGreec.csv', 'df_predHunga.csv', 'df_predIndia.csv', 'df_predIsrae.csv', 'df_predItaly.csv', 
+        'df_predJapan.csv', 'df_predKazak.csv', 'df_predKyrgy.csv', 'df_predLatvi.csv', 'df_predLithu.csv', 'df_predMaldi.csv', 'df_predMoldo.csv', 
+        'df_predNorwa.csv', 'df_predRussi.csv', 'df_predSlove.csv', 'df_predSpain.csv', 'df_predSwede.csv', 'df_predTurke.csv', 'df_predUkrai.csv', 
+        'df_predUnite.csv', 'df_predUS.csv', 'df_predZimba.csv']
+link = []
+for name in csv_file:
+    link.append('https://raw.githubusercontent.com/mayor-oleg/covid-app/master/'+'name')
+print (link)
 
 #read data
 def get_right_df(link):
