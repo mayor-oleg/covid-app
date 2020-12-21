@@ -36,7 +36,7 @@ import seaborn as sns
 directory = os.path.join("c:\\","path")
 mypath = os.getcwd()
 csv_file = []
-for root,dirs,files in os.walk(mypath):
+for root,dirs,files in os.walk('https://github.com/mayor-oleg/covid-app'):
     for file in files:       
         if file.endswith(".csv"):           
            csv_file.append(file)   
