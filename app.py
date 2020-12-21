@@ -34,7 +34,7 @@ import seaborn as sns
 # getting name csv and country name
 
 #directory = os.path.join("c:\\","path")
-#os.chdir('https://github.com/mayor-oleg/covid-app')
+#os.chdir('https://gihttps://github.com/mayor-oleg/covid-app/tree/master/countries')
 mypath = os.getcwd()
 print ('mypath = ', mypath)
 csv_file = []
