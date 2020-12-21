@@ -50,7 +50,7 @@ csv_file = ['df_predAfgha.csv', 'df_predAustr.csv', 'df_predBrazi.csv', 'df_pred
         'df_predUnite.csv', 'df_predUS.csv', 'df_predZimba.csv']
 link = []
 for name in csv_file:
-    link.append('https://raw.githubusercontent.com/mayor-oleg/covid-app/master/'+name)
+    link.append('https://raw.githubusercontent.com/mayor-oleg/covid-app/master/countries/'+name)
 print (link)
 
 #read data
