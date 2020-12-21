@@ -33,7 +33,7 @@ import seaborn as sns
 
 # getting name csv and country name
 
-directory = os.path.join("c:\\","path")
+#directory = os.path.join("c:\\","path")
 mypath = os.getcwd()
 print ('mypath = ', mypath)
 csv_file = []
