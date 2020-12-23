@@ -18,8 +18,11 @@ import numpy as np
 import dateparser
 import os
 from sklearn.linear_model import LinearRegression
+from datetime import timedelta
+from datetime import date
 
-# dash imports
+
+# dash imports based on flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -31,108 +34,7 @@ from plotly import graph_objs as go
 import seaborn as sns
 
 
-# getting name csv and country name
 
-#directory = os.path.join("c:\\","path")
-#os.chdir('https://gihttps://github.com/mayor-oleg/covid-app/tree/master/countries')
-#mypath = os.getcwd()
-#print ('mypath = ', mypath)
-#csv_file = []
-#for root,dirs,files in os.walk(mypath):
-    #for file in files:       
-        #if file.endswith(".csv"):           
-           #csv_file.append(file)   
-#print (csv_file)           
-csv_file = ['df_predAfgha.csv', 'df_predAustr.csv', 'df_predBrazi.csv', 'df_predBulga.csv', 'df_predChina.csv', 'df_predCypru.csv', 'df_predDenma.csv', 
-        'df_predEgypt.csv', 'df_predGerma.csv', 'df_predGreec.csv', 'df_predHunga.csv', 'df_predIndia.csv', 'df_predIsrae.csv', 'df_predItaly.csv', 
-        'df_predJapan.csv', 'df_predKazak.csv', 'df_predKyrgy.csv', 'df_predLatvi.csv', 'df_predLithu.csv', 'df_predMaldi.csv', 'df_predMoldo.csv', 
-        'df_predNorwa.csv', 'df_predRussi.csv', 'df_predSlove.csv', 'df_predSpain.csv', 'df_predSwede.csv', 'df_predTurke.csv', 'df_predUkrai.csv', 
-        'df_predUnite.csv', 'df_predUS.csv', 'df_predZimba.csv']
-link = []
-for name in csv_file:
-    link.append('https://raw.githubusercontent.com/mayor-oleg/covid-app/master/countries/'+name)
-print (link)
-
-#read data
-def get_right_df(link):
-    from datetime import date
-    df = pd.read_csv(link)
-    df_date = dateparser.parse(df['Date'][0], settings={'DATE_ORDER': 'YDM'}).date()
-    start_date = date(2020,1,22)
-    if df_date != start_date:
-        df_copy = pd.DataFrame(np.zeros(df.shape))
-        df_copy.index = df.index
-        df_copy.columns = df.columns
-        df_copy[['Country']] = df[['Country']]
-        dates = pd.date_range(start_date, periods=abs(start_date-df_date).days).strftime("%m-%d-%Y")
-        df_work=df_copy.loc[:(int(abs(start_date-df_date).days))-1].copy()
-        df_work['Date'] = dates
-        #print (df_work) #if need to check df_work, by the way it is zeros in all value
-    else:
-        df_work = pd.DataFrame(columns = (['Country', 'Date', 'Confirmed', 'Recovered', 'Deaths', 'Active','New_infected']))
-    df_work = pd.concat([df_work[['Country', 'Date', 'Confirmed', 'Recovered', 'Deaths', 'Active','New_infected']],df[['Country', 'Date', 'Confirmed', 'Recovered', 'Deaths', 'Active', 'New_infected']]], ignore_index=True)
-    df_work.reset_index()
-    #Next 3 lines use to see result of Data
-    #print (df.head(50))  
-    #print(df.info())
-    #print (df[['Date','Confirmed',  'Recovered',  'Deaths',   'Active',  'New_infected']])
-    return df_work
-#check the Data
-#for l in link:
-    #print (l)
-    #print(get_right_df(l)) 
-
-# Making scale accoarding Elliot Theory
-def smoothing_vector(link, n=2):
-    infected = get_right_df(link)['New_infected'].tolist()    
-    infectedma = [0]
-    x=1
-    while x < len(infected):
-        if x//n == x/n: #there is term of smoothing: 7 mean that week 
-            infectedma.append(int(sum(infected[x-n:x])//n))
-        x+=1
-    return infectedma
-
-# Making List of dates
-def get_date(link,n=2):
-    date = get_right_df(link[1])['Date'].tolist()
-    datema = []
-    for d in range(len(date)):
-        if d//n == d/n:
-            datema.append(date[d])
-    return datema 
-
-#get Dataframe with all countries
-    #This block need only for control Data
-    # and also this block show Data before smooth
-def collect_df(link):
-    columns = [] 
-    for l in link:
-        columns.append(get_right_df(l)['Country'].iloc[0])
-    df_countries_alt = pd.DataFrame(columns = columns)
-    for l in link:
-        df = get_right_df(l)
-        c = get_right_df(l)['Country']
-        df_countries_alt[c[0]] = df['New_infected']
-    return df_countries_alt    
-
-#print ('========================collect_df====================')
-#print (collect_df(link))
-#print ('========================collect_df====================')
-
-
-# Making Data according countries after smooth 
-def df_for_predict(link):
-    df_countries = pd.DataFrame()
-    all = []
-    for l in link:
-        c = get_right_df(l)['Country']
-        df_countries[c[0]] = smoothing_vector(l, n=2)
-    for num in range(len(df_countries)):
-        s = df_countries.iloc[num].sum()
-        all.append(s)
-    df_countries['All'] = all    
-    return df_countries
 
 # Making time series DF
 def ts_df(df):
@@ -176,20 +78,21 @@ server = app.server
 #as so not all countries give the latest info,
 # I should to choose a few from all  
 #All countries will be able later in new version of this project
-#def country():
-    #today = date.today()
-    #l = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+((today-timedelta(5)).strftime("%m-%d-%Y"))+'.csv'
-    #db = pd.read_csv(l)
-    #coun = db['Country_Region'].unique().tolist()
-    #coun.append('All')
-    #return coun
+def country():
+    today = date.today()
+    l = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+((today-timedelta(5)).strftime("%m-%d-%Y"))+'.csv'
+    db = pd.read_csv(l)
+    coun = db['Country_Region'].unique().tolist()
+    coun.append('All')
+    return coun
+countries = country()
 #end this block
 
     
-countries = ['All', 'Afghanistan', 'Bulgaria', 'China', 'Cyprus', 'Denmark', 'Egypt', 'Germany', 'Greece', 
-             'Hungary', 'India', 'Israel', 'Italy', 'Japan', 'Kazakhstan', 'Kyrgyzstan',  'Latvia', 'Lithuania', 'Maldives', 
-             'Moldova', 'Norway', 'Philippines', 'Russia', 'Slovenia', 'Spain', 'Sweden', 'Turkey', 'US', 'Ukraine',
-             'United Kingdom', 'Zimbabwe'  ]    
+#countries = ['All', 'Afghanistan', 'Bulgaria', 'China', 'Cyprus', 'Denmark', 'Egypt', 'Germany', 'Greece', 
+#             'Hungary', 'India', 'Israel', 'Italy', 'Japan', 'Kazakhstan', 'Kyrgyzstan',  'Latvia', 'Lithuania', 'Maldives', 
+#             'Moldova', 'Norway', 'Philippines', 'Russia', 'Slovenia', 'Spain', 'Sweden', 'Turkey', 'US', 'Ukraine',
+#             'United Kingdom', 'Zimbabwe'  ]    
   
 #print (df_for_predict(link))
 #controls
@@ -235,11 +138,12 @@ app.layout = dbc.Container(
               [Input(component_id = 'country-selector', component_property = 'value')])
 def update_date_graph (country):
     print (country)
-
+    general_df = pd.read_csv('general_df.csv')
+    print (general_df)
 #split
     choise = country
     nday = 7
-    fit_df = df_for_predict(link).iloc[:len(df_for_predict(link))]
+    fit_df = general_df.drop(['Date'], axis = 1)
     pre_country_df = fit_df[choise]
     country_df = ts_df(pre_country_df )
     x = country_df.drop([7],axis=1)
@@ -255,7 +159,7 @@ def update_date_graph (country):
 #General Test but not last
 
 #predict
-    gros_test = df_for_predict(link).iloc[len(df_for_predict(link))-9:len(df_for_predict(link))]
+    gros_test = general_df.iloc[len(general_df)-9:len(general_df)]
     pre_gros_test_country = gros_test[choise]
 
 
@@ -293,12 +197,12 @@ def update_date_graph (country):
         new_predicts_min[num]-=std
 
 # Vizualisation     
-    datepred = pd.date_range(get_date(link, n=2)[-1], periods=8).strftime("%m-%d-%Y")
-    dataold = get_date(link, n=2)
+    datepred = pd.date_range(general_df['Date'].tolist()[-1], periods=8).strftime("%m-%d-%Y")
+    dataold = general_df['Date'].tolist()
     fig = go.Figure(layout=go.Layout(height=400, width=1024))
 # real Infected    
     fig.add_trace(go.Scatter(x = dataold,
-                             y = df_for_predict(link)[choise].tolist(),
+                             y = general_df[choise].tolist(),
                              fill = None, mode = 'lines+markers',
                              name = 'new infected per day', line = {'color':'green'}))
 # Predicted Infected
