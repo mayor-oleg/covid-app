@@ -1,13 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Dec  3 18:57:58 2020
 
-@author: jr
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 21 16:19:02 2020
 
 @author: jr
 """
@@ -143,7 +134,7 @@ def update_date_graph (country):
 #split
     choise = country
     nday = 7
-    fit_df = general_df.drop(['Date'], axis = 1)
+    fit_df = general_df.drop(['Date'], axis = 1).drop(['Unnamed: 0'], axis = 1)
     pre_country_df = fit_df[choise]
     country_df = ts_df(pre_country_df )
     x = country_df.drop([7],axis=1)
