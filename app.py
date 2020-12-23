@@ -1,7 +1,7 @@
 
 
-@author: jr
-"""
+#author: jr
+
 
 #Import ganeral libs
 import pandas as pd
