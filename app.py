@@ -70,22 +70,17 @@ server = app.server
 # I should to choose a few from all  
 #All countries will be able later in new version of this project
 def country():
-    today = date.today()
-    l = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'+((today-timedelta(5)).strftime("%m-%d-%Y"))+'.csv'
+    l = 'general_df.csv'
     db = pd.read_csv(l)
-    coun = db['Country_Region'].unique().tolist()
+    coun = db.drop(['Unnamed: 0'], axis=1).columns
     coun.append('All')
     return coun
 countries = country()
 #end this block
 
     
-#countries = ['All', 'Afghanistan', 'Bulgaria', 'China', 'Cyprus', 'Denmark', 'Egypt', 'Germany', 'Greece', 
-#             'Hungary', 'India', 'Israel', 'Italy', 'Japan', 'Kazakhstan', 'Kyrgyzstan',  'Latvia', 'Lithuania', 'Maldives', 
-#             'Moldova', 'Norway', 'Philippines', 'Russia', 'Slovenia', 'Spain', 'Sweden', 'Turkey', 'US', 'Ukraine',
-#             'United Kingdom', 'Zimbabwe'  ]    
   
-#print (df_for_predict(link))
+  
 #controls
 controls =  dbc.Card(
         [
