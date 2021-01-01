@@ -65,14 +65,10 @@ app = dash.Dash('covid_predict_app', external_stylesheets=STYLE)
 server = app.server
 
 #list of countries
-#Next block need to receive all countries, but 
-#as so not all countries give the latest info,
-# I should to choose a few from all  
-#All countries will be able later in new version of this project
 def country():
     l = 'general_df.csv'
     db = pd.read_csv(l)
-    coun = db.drop(['Unnamed: 0'], axis=1).columns
+    coun = db.columns.tolist()
     coun.append('All')
     return coun
 countries = country()
