@@ -68,8 +68,7 @@ server = app.server
 def country():
     l = 'general_df.csv'
     db = pd.read_csv(l)
-    coun = db.drop(['Date', 'Unnamed: 0', 'All'], axis = 1).columns.tolist()
-    coun.append('All')
+    coun = db.drop(['Date', 'Unnamed: 0'], axis = 1).columns.tolist()
     return coun
 countries = country()
 #end this block
