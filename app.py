@@ -106,7 +106,7 @@ app.layout = dbc.Container(
      html.H1("Covid19 reserch"),
      html.Hr(),
      dbc.Row([dbc.Col(controls, width = 6)]),
-     dbc.Row([dbc.Col(html.Div("Wait a few minutes, we collect data"),width = 6)]),
+     dbc.Row([dbc.Col(html.Div("Thy will be done!"),width = 6)]),
      dbc.Row([dbc.Col(graph, width = 6)]
               #dbc.Col(qtygraph, width = 6)]
                 , align =  "center")
@@ -176,6 +176,8 @@ def update_date_graph (country):
     for num in range(len(new_predicts)):
         new_predicts_max[num]+=std
         new_predicts_min[num]-=std
+        if new_predicts_min[num]<0:
+            new_predicts_min[num] = new_predicts[num]
 
 # Vizualisation     
     datepred = pd.date_range(general_df['Date'].tolist()[-1], periods=8).strftime("%m-%d-%Y")
