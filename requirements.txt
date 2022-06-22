@@ -1,5 +1,5 @@
 dateparser==0.7.6
-numpy==1.16.5
+numpy==1.22.0
 dash_bootstrap_components==0.10.3
 plotly==4.9.0
 matplotlib==3.3.1
